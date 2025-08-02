@@ -2,10 +2,17 @@ services:
   tts-webui:
     image: "ghcr.io/rsxdalv/tts-webui:main"
     restart: unless-stopped
+    volumes:
+      - ${HOST_EXTENSIONS:-./extensions}:/app/tts-webui/extensions
+      - ${HOST_VOICES:-./voices}:/app/tts-webui/voices
+      - ${HOST_DATA:-./data}:/app/tts-webui/data
+      - ${HOST_OUTPUTS:-./outputs}:/app/tts-webui/outputs
     ports:
       - ${TTS_PORT:-7770}:7770
       # include React UI
       - ${UI_PORT:-3000}:3000
+      # include API port
+      - ${API_PORT:-7778}:7778
     container_name: tts-webui
     deploy:
         resources:
